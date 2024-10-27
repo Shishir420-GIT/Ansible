@@ -1,0 +1,18 @@
+---
+- name: Initial Play to Set Up Dynamic Host
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Add a new host to the dynamic group
+      add_host:
+        name: "192.168.1.100"      # IP of the new host to add
+        groups: "dynamic_group"    # Name of the dynamic group
+        ansible_user: "root"       # Specify the SSH user
+        ansible_port: 22           # Specify SSH port if needed
+
+- name: Play on Dynamically Added Host
+  hosts: dynamic_group
+  gather_facts: false
+  tasks:
+    - name: Ping the newly added host  # ping and test connection
+      ping:
