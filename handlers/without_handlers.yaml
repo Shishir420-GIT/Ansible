@@ -1,0 +1,32 @@
+---
+- name: Manage RPM package and service
+  hosts: localhost  # Runs on the controller node
+  gather_facts: false
+  become: true
+
+  vars:
+    rpm_package_path: "/tmp/package_name.rpm"  # Path to the downloaded RPM package
+    dest_path: "./"                            # Destination path (current directory)
+    service_name: "service_name"               # Name of the service (e.g., "httpd" for Apache)
+
+  tasks:
+    - name: Copy RPM package to current directory
+      copy:
+        src: "{{ rpm_package_path }}"
+        dest: "{{ dest_path }}"
+        remote_src: yes
+
+    - name: Install the RPM package
+      yum:
+        name: "{{ dest_path }}/{{ rpm_package_path | basename }}"
+        state: present
+
+    - name: Start the service
+      service:
+        name: "{{ service_name }}"
+        state: started
+
+    - name: Stop the service
+      service:
+        name: "{{ service_name }}"
+        state: stopped
