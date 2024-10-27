@@ -1,0 +1,27 @@
+---
+- name: Example Playbook Using Meta
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Check if a condition is met
+      command: some_command
+      register: command_result
+
+    - name: End the play if condition is not met
+      meta: end_play
+      when: command_result.rc != 0
+
+    - name: Flush Handlers
+      meta: flush_handlers
+
+    - name: Clear facts to avoid stale data
+      meta: clear_facts
+
+    - name: Set custom statistics
+      meta:
+        set_stats:
+          my_stat: "value"
+
+    - name: Include a role conditionally
+      meta: include_role
+        name: my_role
