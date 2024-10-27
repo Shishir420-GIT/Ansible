@@ -1,0 +1,38 @@
+---
+- name: API Interaction with Ansible
+  hosts: localhost
+  gather_facts: false
+  vars:
+    api_url: "https://api.example.com"       # Base API URL
+    auth_token: "your_api_token_here"        # Bearer token or API key
+    headers:                                  # Custom headers (if required)
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ auth_token }}"
+
+  tasks:
+    - name: GET request to retrieve data
+      uri:
+        url: "{{ api_url }}/endpoint"
+        method: GET
+        headers: "{{ headers }}"
+        return_content: true
+      register: get_response
+
+    - name: Print GET response
+      debug:
+        msg: "{{ get_response.json }}"
+
+    - name: POST request to create new resource
+      uri:
+        url: "{{ api_url }}/endpoint"
+        method: POST
+        headers: "{{ headers }}"
+        body_format: json
+        body:
+          key1: "value1"
+          key2: "value2"
+      register: post_response
+
+    - name: Print POST response
+      debug:
+        msg: "{{ post_response.json }}"

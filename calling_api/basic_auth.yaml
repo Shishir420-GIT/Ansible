@@ -1,0 +1,23 @@
+---
+- name: API Interaction with Basic Auth
+  hosts: localhost
+  gather_facts: false
+  vars:
+    api_url: "https://api.example.com"       # Base API URL
+    username: "your_username"                # API username
+    password: "your_password"                # API password
+
+  tasks:
+    - name: GET request with Basic Auth
+      uri:
+        url: "{{ api_url }}/endpoint"
+        method: GET
+        url_username: "{{ username }}"
+        url_password: "{{ password }}"
+        force_basic_auth: yes                # Forces Basic Auth even on HTTPS
+        return_content: true
+      register: get_response
+
+    - name: Print GET response
+      debug:
+        msg: "{{ get_response.json }}"

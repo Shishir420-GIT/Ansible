@@ -1,0 +1,26 @@
+---
+- name: API Interaction with Basic Auth (Base64 Encoded)
+  hosts: localhost
+  gather_facts: false
+  vars:
+    api_url: "https://api.example.com"       # Base API URL
+    username: "your_username"                # API username
+    password: "your_password"                # API password
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Basic {{ (username + ':' + password) | b64encode }}"
+
+  tasks:
+    - name: GET request with manually encoded Basic Auth
+      uri:
+        url: "{{ api_url }}/endpoint"
+        method: GET
+        headers: "{{ headers }}"
+        return_content: true
+      register: get_response
+
+    - name: Print GET response
+      debug:
+        msg: "{{ get_response.json }}"
+
+
