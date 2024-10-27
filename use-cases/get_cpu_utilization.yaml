@@ -1,0 +1,13 @@
+---
+- name: Gather CPU Utilization
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get CPU Utilization
+      shell: "top -bn1 | grep 'Cpu(s)'"
+      register: cpu_output
+
+    - name: Show CPU Utilization
+      debug:
+        msg: "{{ cpu_output.stdout }}"
+

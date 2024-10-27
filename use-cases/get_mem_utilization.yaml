@@ -1,0 +1,12 @@
+---
+- name: Gather Memory Utilization
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get Memory Utilization
+      shell: "free -m"
+      register: memory_output
+
+    - name: Show Memory Utilization
+      debug:
+        msg: "{{ memory_output.stdout }}"
